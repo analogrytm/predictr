@@ -3,6 +3,9 @@
 // ## view.js
 // ## mcontrollers.js
 
+// set this if you are coding without an internet connection...
+window.offline = true;
+
 
   Predictr.ApplicationController = Ember.Controller.extend({
   });
@@ -10,30 +13,56 @@
   // Boilerplate below initializes the game. Routers make more sense 
   // when there is more than one URL :)
   Predictr.ApplicationView = Ember.View.extend();
-  Predictr.EventsView = Ember.View.extend();
+
+  // events
+  Predictr.EventsView = Ember.View.extend({});
   Predictr.EventsController = Ember.ObjectController.extend({
     content: Ember.Object.create()
   });
-  Predictr.EventsController = Ember.Controller.extend({
+//  Predictr.EventsController = Ember.Controller.extend({
+//  });
+Predictr.EventsController = Ember.ArrayController.extend({
+    title:null,
+    content: [],
+    init: function() {
+    },
     showEvents: function(data)
     {
-      console.log('receviecd event data...');
-      this.set('model', data);
+      console.log('received '+data.results.length+' events data...');
+      var content = [];
+      for(var c=0;c<data.results.length;c+=1)
+      {
+        content.pushObject(data.results[c]);
+      }
+      this.set('content', content);
+
     },
-    model: null,
     showEvent: function(eventid)
     {
       console.log("showing event details using id="+eventid);
-      var model = this.get('model');
+      /*var model = this.get('model');
       for(var c=0;c<model.results.length;c+=1)
       {
         if (eventid == model.results[c].id)
         {
-          console.log("Name: "+model.results[c].name);
+          console.log("found event "+model.results[c].name);
+          this.$().accordian();
+          this.set("selectedEvent", model.results[c] );
         }
-      }
+      }*/
+    }
+
+});
+
+
+  Predictr.EventView = Ember.View.extend({
+    showEvent: false,
+    displayEvent: function(e) {
+      e.preventDefault()
+      this.set("showReply", true);
     }
   });
+
 
   Predictr.ClickableView = Ember.View.extend({
   click: function(evt) {
@@ -77,27 +106,34 @@
         console.log('login fired. '+ u + ' - '+ p );      
 
         var myController = this;
-        $.ajax({
-          type: 'POST',
-          url: 'http://api.test.havefunhub.com/services/login',
-          data: {},
-          contentType: 'application/json',
-          dataType: 'json',
-          success: function(data, status, resp){
-            console.log('success data = '+ JSON.stringify(data) );
-            console.log('success status = '+status);
-            console.log('success resp = '+resp);
-            myController.authenticated();
-          },
-          error: function(resp, status, error){
-            console.log('error resp = '+ JSON.stringify(resp) );
-            console.log('error status = '+status);
-            console.log('error message = '+error);
-          },
-          beforeSend : function(req) {
-              req.setRequestHeader('Authorization', "Basic " + Base64.encode(u+ ':' + p));
-          }
-        });
+        if (!window.offline)
+        {
+          $.ajax({
+            type: 'POST',
+            url: 'http://api.test.havefunhub.com/services/login',
+            data: {},
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(data, status, resp){
+              console.log('success data = '+ JSON.stringify(data) );
+              console.log('success status = '+status);
+              console.log('success resp = '+resp);
+              myController.authenticated();
+            },
+            error: function(resp, status, error){
+              console.log('error resp = '+ JSON.stringify(resp) );
+              console.log('error status = '+status);
+              console.log('error message = '+error);
+            },
+            beforeSend : function(req) {
+                req.setRequestHeader('Authorization', "Basic " + Base64.encode(u+ ':' + p));
+            }
+          });
+        }else{
+          // fire the authenticated success!
+              console.log('success data = '+ JSON.stringify(window.eventsResults) );
+              myController.authenticated();
+        }
       }
   });
 
@@ -119,30 +155,32 @@
   Predictr.EventsRoute = Ember.Route.extend({
     route: "/events",
     setupController: function(controller, model) {
-      // set the indexcontrollers title      
-      //controller.set('model', model);
-      //controller.set('content', model);
-      controller.set('title', 'Your current events...');
     
-      var myRoute = this;
-        $.ajax({
-          type: 'GET',
-          url: 'http://api.test.havefunhub.com/services/events',
-          data: {},
-          contentType: 'application/json',
-          dataType: 'json',
-          success: function(data, status, resp){
-            console.log('success data = '+ JSON.stringify(data) );
-            console.log('success status = '+status);
-            console.log('success resp = '+resp);
-            controller.showEvents(data);
-          },
-          error: function(resp, status, error){
-            console.log('error resp = '+ JSON.stringify(resp) );
-            console.log('error status = '+status);
-            console.log('error message = '+error);
-          }
-        });
+      if (!window.offline)
+      {
+        var myRoute = this;
+          $.ajax({
+            type: 'GET',
+            url: 'http://api.test.havefunhub.com/services/events',
+            data: {},
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(data, status, resp){
+              console.log('success data = '+ JSON.stringify(data) );
+              console.log('success status = '+status);
+              console.log('success resp = '+resp);
+              controller.showEvents(data);
+            },
+            error: function(resp, status, error){
+              console.log('error resp = '+ JSON.stringify(resp) );
+              console.log('error status = '+status);
+              console.log('error message = '+error);
+            }
+          });
+        }else{
+              console.log('success data = '+ JSON.stringify(window.eventsResults) );
+              controller.showEvents(window.eventsResults);          
+        }
     }
   });
 
@@ -166,3 +204,4 @@
     this.route("events", { path: "/events" });
   });
   Predictr.initialize();
+
