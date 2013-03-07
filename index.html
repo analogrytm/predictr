@@ -2,15 +2,17 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Predictr - Save and share your predictions in EmberJS</title>
+    <title>#44312</title>
     <meta name="viewport" content="width=device-width">
 
-    <link href='http://fonts.googleapis.com/css?family=Average+Sans' rel='stylesheet' type='text/css'>
+    <!-- link href='http://fonts.googleapis.com/css?family=Average+Sans' rel='stylesheet' type='text/css'-->
   </head>
   <body>
+    <script src="js/app/devobjects.js"></script>
     <script src="js/vendor/json2.js"></script>
     <script src="js/vendor/base64.js"></script>
     <script src="js/vendor/jquery-1.9.1.min.js"></script>
+    <script src="js/vendor/jquery-ui-1.10.1.custom.min.js"></script>
     <script src="js/vendor/handlebars.js"></script>
     <script src="js/vendor/ember.js"></script>
 
@@ -26,7 +28,7 @@
 
     <script type="text/x-handlebars" data-template-name="application">
       <header>
-        <h1>Predictr</h1>
+        <h1>#44312</h1>
       </header>
 
       <div class="content">
@@ -58,7 +60,7 @@
     </ul>
    </script>
 
-    <script type="text/x-handlebars" data-template-name="events">
+  <script type="text/x-handlebars" data-template-name="events">
     <b>{{title}}</b>
     <br/>
     <ul>
@@ -67,9 +69,20 @@
       <li>{{#linkTo "login"}}login{{/linkTo}}
       <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
     </ul>
-    {{#each model.results}}
-      <li><a {{action showEvent id}}>{{unbound name}}: {{unbound description}}</a></li>
-    {{/each}}
+
+{{#each controller}}
+  {{name}} 
+  <a href="#" {{action "showEvent id"}}>more...</a>
+      {{#if showEvent}}
+        {{description}}         
+      {{/if}}
+      <p>
+{{/each}}
+
+   </script>
+
+    <script type="text/x-handlebars" data-template-name="event">
+      <div class=hidden><h2>{{unbound name}}</h2>{{unbound description}}</div>
    </script>
 
     <script type="text/x-handlebars" data-template-name="predictions">
