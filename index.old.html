@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>#44312</title>
+    <meta name="viewport" content="width=device-width">
+    <script data-main="js/app/main.js" src="js/vendor/require.js"></script>
+  </head>
+  <body>
+    <script type="text/x-handlebars" data-template-name="application">
+      <header>
+        <h1>#44312</h1>
+      </header>
+
+      <div class="content">
+        {{outlet}}
+      </div>
+      <footer>        
+      </footer>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="index">
+    <b>{{title}}</b>
+    <br/>
+    <ul>
+      <li>{{#linkTo "about"}}about{{/linkTo}}
+      <li>{{#linkTo "index"}}index{{/linkTo}}
+      <li>{{#linkTo "login"}}login{{/linkTo}}
+      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
+    </ul>
+   </script>
+
+    <script type="text/x-handlebars" data-template-name="about">
+    <b>{{title}}</b>
+    <br/>
+    <ul>
+      <li>{{#linkTo "about"}}about{{/linkTo}}
+      <li>{{#linkTo "index"}}index{{/linkTo}}
+      <li>{{#linkTo "login"}}login{{/linkTo}}
+      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
+    </ul>
+   </script>
+
+  <script type="text/x-handlebars" data-template-name="events">
+    <b>{{title}}</b>
+    <br/>
+    <ul>
+      <li>{{#linkTo "about"}}about{{/linkTo}}
+      <li>{{#linkTo "index"}}index{{/linkTo}}
+      <li>{{#linkTo "login"}}login{{/linkTo}}
+      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
+    </ul>
+
+{{#each controller}}
+  {{name}} 
+  <a href="#" {{action "showEvent id"}}>more...</a>
+      {{#if showEvent}}
+        {{description}}         
+      {{/if}}
+      <p>
+{{/each}}
+
+   </script>
+
+    <script type="text/x-handlebars" data-template-name="event">
+      <div class=hidden><h2>{{unbound name}}</h2>{{unbound description}}</div>
+   </script>
+
+    <script type="text/x-handlebars" data-template-name="predictions">
+    These are my predictions!!!
+    <ul>
+      <li>{{#linkTo "about"}}about{{/linkTo}}
+      <li>{{#linkTo "index"}}index{{/linkTo}}
+      <li>{{#linkTo "login"}}login{{/linkTo}}
+      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
+    </ul>
+   </script>
+
+    <script type="text/x-handlebars" data-template-name="login">
+    login
+    <ul>
+      <li>{{#linkTo "about"}}about{{/linkTo}}
+      <li>{{#linkTo "index"}}index{{/linkTo}}
+      <li>{{#linkTo "login"}}login{{/linkTo}}
+      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
+    </ul>
+
+        <label>
+          Username:
+          {{view Ember.TextField valueBinding="username"}} 
+        </label>
+        <br>
+        <label>
+          Password:
+          {{view Ember.TextField type="password" valueBinding="password"}}
+        </label>
+        <button {{action login}}>Login</button>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="user">
+    This is to display the current user.
+    </script>
+
+ </body>
+</html>

@@ -4,126 +4,117 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>#44312</title>
     <meta name="viewport" content="width=device-width">
-
-    <!-- link href='http://fonts.googleapis.com/css?family=Average+Sans' rel='stylesheet' type='text/css'-->
-  </head>
-  <body>
-    <script src="js/app/devobjects.js"></script>
+    
     <script src="js/vendor/json2.js"></script>
     <script src="js/vendor/base64.js"></script>
     <script src="js/vendor/jquery-1.9.1.min.js"></script>
-    <script src="js/vendor/jquery-ui-1.10.1.custom.min.js"></script>
+    <!-- script src="js/vendor/jquery-ui-1.10.1.custom.min.js"></script -->
+    <!-- script src="js/vendor/jquery.mobile-1.3.0.js"></script -->
     <script src="js/vendor/handlebars.js"></script>
     <script src="js/vendor/ember.js"></script>
+    <style type="text/css">
+.events li
+{
+    padding-bottom: 10px
+}
+.eventItem a,  .eventItem a:visited
+{
+    color:blue;
+    text-decoration:none;
+}
+.eventItem a:hover
+{
+    text-decoration:underline;
+}
 
-    <!--script type="text/x-handlebars" data-template-name="index">
-    <h2>Index Content:</h2>
-  <ul>
-  {{#each item in content}}
-      <li>{{item}}</li>
-  {{/each}}
-   </ul>
-    </script -->
-    
+    </style>
+  </head>
+  <body>
+    <div id="main">
 
-    <script type="text/x-handlebars" data-template-name="application">
-      <header>
-        <h1>#44312</h1>
-      </header>
+    </div>
 
-      <div class="content">
-        {{outlet}}
-      </div>
-      <footer>        
-      </footer>
+    <!-- Application -->
+    <script src="js/app/havefunhub.js"></script>
+
+    <!-- mixins -->
+    <script src="js/app/mixins/prescence.js"></script>
+
+    <!-- handlebars -->
+    <script type="text/x-handlebars" data-template-name="application" data-role="page">
+{{render header}}
+
+<div id='main-outlet'>
+  {{outlet}}
+</div>
+
+{{render modal}}
     </script>
+    <script type="text/x-handlebars" data-template-name="header" data-role="header">
+<div class='container'>
+  <div class='contents clearfix'>
+havefunhub 2.0 - {{#linkTo events}}Show events{{/linkTo}}
 
-    <script type="text/x-handlebars" data-template-name="index">
-    <b>{{title}}</b>
-    <br/>
-    <ul>
-      <li>{{#linkTo "about"}}about{{/linkTo}}
-      <li>{{#linkTo "index"}}index{{/linkTo}}
-      <li>{{#linkTo "login"}}login{{/linkTo}}
-      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
+  </div>
+</div>
+    </script>
+    <script type="text/x-handlebars" data-template-name="events">
+
+    <h1>Happening now</h1>
+
+    <ul class=events>
+    {{#each item in content.currentEvents}}
+        <li class=eventItem>{{#linkTo event item.id}}{{item.name}}{{/linkTo}}</li>
+    {{/each}}
     </ul>
-   </script>
-
-    <script type="text/x-handlebars" data-template-name="about">
-    <b>{{title}}</b>
-    <br/>
-    <ul>
-      <li>{{#linkTo "about"}}about{{/linkTo}}
-      <li>{{#linkTo "index"}}index{{/linkTo}}
-      <li>{{#linkTo "login"}}login{{/linkTo}}
-      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
-    </ul>
-   </script>
-
-  <script type="text/x-handlebars" data-template-name="events">
-    <b>{{title}}</b>
-    <br/>
-    <ul>
-      <li>{{#linkTo "about"}}about{{/linkTo}}
-      <li>{{#linkTo "index"}}index{{/linkTo}}
-      <li>{{#linkTo "login"}}login{{/linkTo}}
-      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
-    </ul>
-
-{{#each controller}}
-  {{name}} 
-  <a href="#" {{action "showEvent id"}}>more...</a>
-      {{#if showEvent}}
-        {{description}}         
-      {{/if}}
-      <p>
-{{/each}}
-
-   </script>
+    {{#if content.hasMoreEvents}}
+        <button {{action loadMore}}>More</button>
+    {{/if}}
+    </script>
 
     <script type="text/x-handlebars" data-template-name="event">
-      <div class=hidden><h2>{{unbound name}}</h2>{{unbound description}}</div>
-   </script>
-
-    <script type="text/x-handlebars" data-template-name="predictions">
-    These are my predictions!!!
+    <h1>Showing a single event!</h1>
     <ul>
-      <li>{{#linkTo "about"}}about{{/linkTo}}
-      <li>{{#linkTo "index"}}index{{/linkTo}}
-      <li>{{#linkTo "login"}}login{{/linkTo}}
-      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
+        <li>{{id}}</li>
+        <li>{{name}}</li>
+        <li>{{description}}</li>
+        <li>{{start}}</li>
+        <li>{{end}}</li>
     </ul>
-   </script>
-
-    <script type="text/x-handlebars" data-template-name="login">
-    login
-    <ul>
-      <li>{{#linkTo "about"}}about{{/linkTo}}
-      <li>{{#linkTo "index"}}index{{/linkTo}}
-      <li>{{#linkTo "login"}}login{{/linkTo}}
-      <li>{{#linkTo "predictions"}}predictions{{/linkTo}}
-    </ul>
-
-        <label>
-          Username:
-          {{view Ember.TextField valueBinding="username"}} 
-        </label>
-        <br>
-        <label>
-          Password:
-          {{view Ember.TextField type="password" valueBinding="password"}}
-        </label>
-        <button {{action login}}>Login</button>
     </script>
 
-    <script type="text/x-handlebars" data-template-name="user">
-    This is to display the current user.
-    </script>
+    <div data-role="page">Finding local events!</div>
+
+    <!-- models -->
+    <script src="js/app/models/model.js"></script>
+    <script src="js/app/models/user.js"></script>
+    <script src="js/app/models/event.js"></script>
+    <script src="js/app/models/events.js"></script>
+
+    <!-- controllers -->
+    <script src="js/app/controllers/controller.js"></script>
+    <script src="js/app/controllers/static_controller.js"></script>
+    <script src="js/app/controllers/application_controller.js"></script>
+    <script src="js/app/controllers/header_controller.js"></script>
+    <script src="js/app/controllers/events_controller.js"></script>
+
+    <!-- views -->
+    <script src="js/app/views/view.js"></script>
+    <script src="js/app/views/application_view.js"></script>
+    <script src="js/app/views/header_view.js"></script>
+    <script src="js/app/views/events_view.js"></script>
+
+    <!-- Routes -->
+    <script src="js/app/routes/havefunhub_route.js"></script>
+    <script src="js/app/routes/application_route.js"></script>
+    <script src="js/app/routes/application_routes.js"></script>
+    <script src="js/app/routes/index_route.js"></script>
+    <script src="js/app/routes/events_route.js"></script>
+    <script src="js/app/routes/event_route.js"></script>
+
+    <!-- Start -->
+    <script src="js/app/main.js"></script>
 
 
-    <script src="js/app/model.js"></script>
-    <script src="js/app/view.js"></script>
-    <script src="js/app/controller.js"></script>
-    <script src="js/app/init.js"></script>
  </body>
 </html>
