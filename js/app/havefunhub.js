@@ -9,7 +9,6 @@
 **/
 
 window.HaveFunHub = {};
-HaveFunHub.SiteSettings = {};
 
 console.log('creating application...');
 HaveFunHub = Ember.Application.create({

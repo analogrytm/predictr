@@ -1,6 +1,8 @@
 // this is the start of our js application.
 // ensure all loaded mudles are used here...
 
+  HaveFunHub.hasLocation = false;
+
   console.log("creating router...");
 
   HaveFunHub.Router.map(function() {
@@ -10,8 +12,6 @@
   });
   
   console.log("initing app...");
-  HaveFunHub.initialize();
-
 /*
   $(document).bind('pageinit', function(){
     console.log('pageinit');

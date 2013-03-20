@@ -18,9 +18,13 @@
 
       var event_model;
       if (model.id)
-        event_model = HaveFunHub.EventModel.find(model.id, controller);
-      else
-        event_model = HaveFunHub.EventModel.find(model, controller);
+      {
+        event_model = HaveFunHub.EventModel.find(model.id, controller);        
+      }
+      else{
+        event_model = HaveFunHub.EventModel.find(model, controller);        
+      }
+      this.set('content', event_model);
     }
   });
 
