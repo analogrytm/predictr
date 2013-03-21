@@ -11,7 +11,7 @@ HaveFunHub.EventModel.reopenClass({
   find: function(id, controller) {
     	console.log('searching for event with id '+ id);
     	var _this = this;
-    	$.ajax('http://api.test.havefunhub.com/services/event/'+id, {
+    	$.ajax('http://api.havefunhub.com/services/event/'+id, {
             type: 'GET',
             data: {},
             contentType: 'application/json',

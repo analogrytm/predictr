@@ -19,7 +19,7 @@
   	loadEvents: function(){
   		var _this = this;
       console.log('searching for events with coords '+ HaveFunHub.longitude+ " : "+ HaveFunHub.latitude);
-      var pageUrl = 'http://api.test.havefunhub.com/services/events';
+      var pageUrl = 'http://api.havefunhub.com/services/events';
       var nextPage = this.get('nextPage');
       var eventTime = this.get('eventTime');
       if (!eventTime)
